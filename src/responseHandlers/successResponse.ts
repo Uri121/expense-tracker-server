@@ -3,7 +3,7 @@ import { Response } from 'express';
 const successResponse = (
   res: Response,
   msg: string,
-  body: object,
+  body: Object,
   statusCode: number
 ) => {
   res.status(statusCode).send({ msg, body });

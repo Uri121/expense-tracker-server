@@ -18,6 +18,15 @@ const userController = {
       next(error);
     }
   },
+  signUser: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = userService.signUser(req.body);
+      logger.info(`token has been issued successfully`);
+      successResponse(res, 'token has been issued successfully', token, 200);
+    } catch (error: unknown) {
+      next(error);
+    }
+  },
 };
 
 export default userController;

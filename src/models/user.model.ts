@@ -7,7 +7,12 @@ export interface IUserDocument extends mongoose.Document {
   password: string;
   createdAt: Date;
   updatedAt: Date;
-  comparePassword: () => boolean;
+  comparePassword: (password: string) => boolean;
+}
+
+export interface ISignUser {
+  email: string;
+  password: string;
 }
 
 const userSchema = new mongoose.Schema(
