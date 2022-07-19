@@ -2,6 +2,7 @@ import { NextFunction, Response, Request } from 'express';
 import winston, { format } from 'winston';
 const { combine, timestamp, colorize, prettyPrint } = format;
 import 'dotenv/config';
+import errorResponse from '../responseHandlers/errorResponse';
 
 const logConfiguration = {
   lever: 'info',
@@ -24,7 +25,17 @@ export const loggerMiddleWare = (
   res: Response,
   next: NextFunction
 ) => {
-  const { url, method, query } = req;
+  const { url, method } = req;
   logger.info(`${method}:${url}`);
   next();
+};
+
+export const errorMiddleWare = (
+  error: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  logger.error(error.message);
+  errorResponse(res, error);
 };
