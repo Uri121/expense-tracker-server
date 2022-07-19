@@ -7,7 +7,7 @@ export interface IUserSchema {
   password: string;
 }
 
-const UserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
@@ -19,4 +19,4 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-export const User = mongoose.model<IUserSchema>('User', UserSchema);
+export const User = mongoose.model<IUserSchema>('User', userSchema);
