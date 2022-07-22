@@ -4,8 +4,9 @@ import { connectDb } from './src/db/connect';
 import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 import userRouter from './src/routes/user.route';
+import config from './src/config/default.config';
 
-const port = process.env.PORT as string;
+const { port } = config;
 const app = express();
 
 app.use(express.json());

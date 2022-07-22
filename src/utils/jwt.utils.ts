@@ -1,12 +1,8 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import config from '../config/default.config';
+const { privateKey, pubKey } = config;
 
-const privateKey = process.env.PRIVATE_KEY as string;
-const publicKey = process.env.PUBLIC_KEY as string;
-
-export const signJwt = (
-  object: Object,
-  options: jwt.SignOptions | undefined
-) => {
+export const signJwt = (object: Object, options: jwt.SignOptions | undefined) => {
   return jwt.sign(object, privateKey, {
     ...(options && options),
     algorithm: 'RS256',
@@ -21,7 +17,7 @@ export interface IJwtValidation {
 
 export const validateJwt = (token: string): IJwtValidation => {
   try {
-    const decoded = jwt.verify(token, publicKey);
+    const decoded = jwt.verify(token, pubKey);
     return {
       decoded,
       expired: false,

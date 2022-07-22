@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
 import { logger } from '../middleware/logger';
+import config from '../config/default.config';
 
-const mongoUri = process.env.MONGO_URI as string;
+const { dbUri } = config;
 
 export const connectDb = async () => {
   try {
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(dbUri);
     logger.info('🚀 mongodb server is running');
   } catch (error: unknown) {
     logger.error(`error at ${error}`);

@@ -15,9 +15,9 @@ const userController = {
   },
   signUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const token = userService.signUser(req.body);
-      logger.info(`token has been issued successfully`);
-      res.cookie('token', token, { httpOnly: true });
+      const token = await userService.signUser(req.body);
+      logger.info('token has been issued successfully');
+      res.cookie('token', token, { maxAge: 9000, httpOnly: true, secure: true });
       successResponse(res, 'token has been issued successfully', token, 200);
     } catch (error: unknown) {
       next(error);

@@ -2,12 +2,13 @@ import { ISignUser, IUserDocument, UserModel } from '../models/user.model';
 import { DocumentDefinition } from 'mongoose';
 import { omit } from 'lodash';
 import { signJwt } from '../utils/jwt.utils';
+import config from '../config/default.config';
+
+const { tokenTTL } = config;
 
 const userService = {
   createUser: async (
-    input: DocumentDefinition<
-      Omit<IUserDocument, 'createdAt' | 'updatedAt' | 'comparePassword'>
-    >
+    input: DocumentDefinition<Omit<IUserDocument, 'createdAt' | 'updatedAt' | 'comparePassword'>>
   ): Promise<Partial<IUserDocument>> => {
     try {
       const user = await UserModel.create(input);
@@ -23,10 +24,7 @@ const userService = {
       const isValid = user.comparePassword(input.password);
       if (!isValid) throw new Error('email or password are wrong');
 
-      const token = signJwt(
-        { user },
-        { expiresIn: String(process.env.TOKEN_TTL) }
-      );
+      const token = signJwt({ user }, { expiresIn: tokenTTL });
       return token;
     } catch (error) {
       throw error;
