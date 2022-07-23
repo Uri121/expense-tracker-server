@@ -20,22 +20,27 @@ const logConfiguration = {
 
 export const logger = winston.createLogger(logConfiguration);
 
-export const loggerMiddleWare = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+/**
+ * log every request coming to the server
+ *
+ * @param req express request object
+ * @param res express response object
+ * @param next express next function
+ */
+export const loggerMiddleWare = (req: Request, res: Response, next: NextFunction) => {
   const { url, method } = req;
   logger.info(`${method}:${url}`);
   next();
 };
 
-export const errorMiddleWare = (
-  error: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+/**
+ * log and send an error response on every request in the server
+ *
+ * @param req express request object
+ * @param res express response object
+ * @param next express next function
+ */
+export const errorMiddleWare = (error: Error, req: Request, res: Response, next: NextFunction) => {
   logger.error(error.message);
   errorResponse(res, error);
 };
