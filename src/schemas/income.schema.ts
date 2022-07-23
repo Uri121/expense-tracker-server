@@ -8,3 +8,8 @@ export const incomeSchema = Joi.object({
     amount: Joi.number(),
   }),
 });
+
+export const incomeQuery = Joi.object({
+  salary: Joi.number(),
+  date: Joi.date(),
+});

@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
-interface IOthers {
+export interface IOthers {
   title: string;
   amount: number;
 }
 
 export interface IIncomeDocument extends mongoose.Document {
   salary: number;
-  userId: typeof mongoose.Types.ObjectId;
+  userId: string;
   date: Date;
   others?: IOthers[];
   createdAt: Date;
