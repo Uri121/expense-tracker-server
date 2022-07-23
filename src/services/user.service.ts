@@ -24,7 +24,7 @@ const userService = {
       const isValid = user.comparePassword(input.password);
       if (!isValid) throw new Error('email or password are wrong');
 
-      const token = signJwt({ user }, { expiresIn: tokenTTL });
+      const token = signJwt(omit(user.toJSON(), 'password'), { expiresIn: tokenTTL });
       return token;
     } catch (error) {
       throw error;
