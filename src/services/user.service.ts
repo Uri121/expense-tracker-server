@@ -1,5 +1,5 @@
 import { ISignUser, IUserDocument, UserModel } from '../models/user.model';
-import { DocumentDefinition } from 'mongoose';
+import { DocumentDefinition, FilterQuery } from 'mongoose';
 import { omit } from 'lodash';
 import { signJwt } from '../utils/jwt.utils';
 import config from '../config/default.config';
@@ -26,6 +26,13 @@ const userService = {
 
       const token = signJwt(omit(user.toJSON(), 'password'), { expiresIn: tokenTTL });
       return token;
+    } catch (error) {
+      throw error;
+    }
+  },
+  getUserByEmail: async (input: FilterQuery<DocumentDefinition<IUserDocument>>): Promise<IUserDocument> => {
+    try {
+      return (await UserModel.findOne({ input }).lean().select('-password')) as IUserDocument;
     } catch (error) {
       throw error;
     }

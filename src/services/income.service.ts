@@ -1,5 +1,5 @@
 import { IIncomeDocument, IncomeModel } from './../models/income.model';
-import { DocumentDefinition } from 'mongoose';
+import { DocumentDefinition, FilterQuery } from 'mongoose';
 
 const incomeService = {
   addIncome: async (userId: string, input: DocumentDefinition<Partial<IIncomeDocument>>): Promise<IIncomeDocument> => {
@@ -13,7 +13,7 @@ const incomeService = {
   },
   getIncome: async (
     userId: string,
-    input: DocumentDefinition<Partial<IIncomeDocument>>
+    input: FilterQuery<DocumentDefinition<IIncomeDocument>>
   ): Promise<IIncomeDocument[]> => {
     input.userId = userId;
     console.log(input);
