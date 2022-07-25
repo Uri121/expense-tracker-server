@@ -6,6 +6,7 @@ import 'dotenv/config';
 import userRouter from './src/routes/user.route';
 import config from './src/config/default.config';
 import incomeRouter from './src/routes/income.route';
+import expenseRouter from './src/routes/expense.route';
 
 const { port } = config;
 const app = express();
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use(loggerMiddleWare);
 app.use('/api/user', userRouter);
 app.use('/api/income', incomeRouter);
+app.use('/api/expense', expenseRouter);
 app.use(errorMiddleWare);
 
 app.listen(port, () => {
