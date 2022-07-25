@@ -2,13 +2,7 @@ import { logger } from './../middleware/logger';
 import { Request, Response, NextFunction } from 'express';
 import successResponse from '../responseHandlers/successResponse';
 import incomeService from '../services/income.service';
-
-const getUserId = (req: Request): string => {
-  if (!req.currentUser?._id) {
-    throw new Error('something went wrong');
-  }
-  return req.currentUser._id;
-};
+import { getUserId } from '../utils/currentUser.utils';
 
 const incomeController = {
   addIncome: async (req: Request, res: Response, next: NextFunction) => {
