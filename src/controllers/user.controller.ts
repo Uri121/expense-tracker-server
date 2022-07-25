@@ -3,14 +3,12 @@ import userService from '../services/user.service';
 import { Request, Response, NextFunction } from 'express';
 import { logger } from '../middleware/logger';
 
-const RES_CODE = 200;
-
 const userController = {
   createUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const createdUser = await userService.createUser(req.body);
       logger.info('user created successfully', createdUser);
-      return successResponse(res, 'user created successfully', createdUser, RES_CODE);
+      return successResponse(res, 'user created successfully', createdUser);
     } catch (error: unknown) {
       next(error);
     }
@@ -20,7 +18,7 @@ const userController = {
       const token = await userService.signUser(req.body);
       logger.info('token has been issued successfully');
       res.cookie('token', token, { maxAge: 9000, httpOnly: true, secure: true });
-      successResponse(res, 'token has been issued successfully', token, RES_CODE);
+      successResponse(res, 'token has been issued successfully', token);
     } catch (error: unknown) {
       next(error);
     }
@@ -29,7 +27,7 @@ const userController = {
     try {
       req.currentUser = null;
       res.clearCookie('token');
-      successResponse(res, 'user has logged out', {}, RES_CODE);
+      successResponse(res, 'user has logged out', {});
     } catch (error: unknown) {
       next(error);
     }
@@ -38,7 +36,7 @@ const userController = {
     try {
       const user = await userService.getUserByEmail(req.query);
       logger.info('user was found', user);
-      successResponse(res, 'user was found', user, RES_CODE);
+      successResponse(res, 'user was found', user);
     } catch (error: unknown) {
       next(error);
     }

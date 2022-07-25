@@ -16,7 +16,7 @@ const incomeController = {
       const userId = getUserId(req);
       const addedIncome = await incomeService.addIncome(userId, req.body);
       logger.info(`income was added successfully ${addedIncome}`);
-      successResponse(res, 'income was added successfully', addedIncome, 200);
+      successResponse(res, 'income was added successfully', addedIncome);
     } catch (error: unknown) {
       next(error);
     }
@@ -26,7 +26,7 @@ const incomeController = {
       const userId = getUserId(req);
       const income = await incomeService.getIncome(userId, req.query);
       logger.info('got income', income);
-      successResponse(res, 'income was fetched successfully', income, 200);
+      successResponse(res, 'income was fetched successfully', income);
     } catch (error: unknown) {
       next(error);
     }

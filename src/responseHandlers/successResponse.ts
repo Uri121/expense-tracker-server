@@ -1,11 +1,7 @@
 import { Response } from 'express';
 
-const successResponse = (
-  res: Response,
-  msg: string,
-  body: Object,
-  statusCode: number
-) => {
+const statusCode = 200;
+const successResponse = (res: Response, msg: string, body: Object) => {
   res.status(statusCode).send({ msg, body });
 };
 export default successResponse;
