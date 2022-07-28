@@ -41,10 +41,7 @@ const expenseService = {
       throw error;
     }
   },
-  getExpenses: async (
-    userId: string,
-    input: FilterQuery<DocumentDefinition<IExpenseDocument>>
-  ): Promise<IExpenseDocument[]> => {
+  getExpenses: async (userId: string, input: FilterQuery<IExpenseDocument>): Promise<IExpenseDocument[]> => {
     try {
       input.userId = userId;
       return await ExpenseModel.find({ ...input }).lean();

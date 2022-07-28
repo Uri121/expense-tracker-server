@@ -11,10 +11,7 @@ const incomeService = {
       throw error;
     }
   },
-  getIncome: async (
-    userId: string,
-    input: FilterQuery<DocumentDefinition<IIncomeDocument>>
-  ): Promise<IIncomeDocument[]> => {
+  getIncome: async (userId: string, input: FilterQuery<IIncomeDocument>): Promise<IIncomeDocument[]> => {
     input.userId = userId;
     console.log(input);
 
