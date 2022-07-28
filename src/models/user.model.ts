@@ -18,6 +18,11 @@ export interface ISignUser {
   password: string;
 }
 
+export interface IAuth {
+  accessToken: string;
+  refreshToken: string;
+}
+
 const userSchema = new mongoose.Schema(
   {
     firstName: { type: String, require: true },

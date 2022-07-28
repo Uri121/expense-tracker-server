@@ -13,7 +13,6 @@ export const signJwt = (object: Object, options: jwt.SignOptions | undefined) =>
 export interface IJwtValidation {
   decoded: IUserDocument | null;
   expired: boolean;
-  error: unknown | null;
 }
 
 export const validateJwt = (token: string): IJwtValidation => {
@@ -23,13 +22,11 @@ export const validateJwt = (token: string): IJwtValidation => {
     return {
       decoded,
       expired: false,
-      error: null,
     };
   } catch (error) {
     return {
       decoded: null,
       expired: true,
-      error,
     };
   }
 };

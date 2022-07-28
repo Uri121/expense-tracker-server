@@ -15,10 +15,11 @@ const userController = {
   },
   signUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const token = await userService.signUser(req.body);
+      const { accessToken, refreshToken } = await userService.signUser(req.body);
       logger.info('token has been issued successfully');
-      res.cookie('token', token, { maxAge: 9000, httpOnly: true, secure: true });
-      successResponse(res, 'token has been issued successfully', token);
+      res.cookie('accessToken', accessToken, { maxAge: 9000, httpOnly: true, secure: true });
+      res.cookie('refreshToken', refreshToken, { maxAge: 9000, httpOnly: true, secure: true });
+      successResponse(res, 'token has been issued successfully', { accessToken, refreshToken });
     } catch (error: unknown) {
       next(error);
     }

@@ -5,4 +5,5 @@ export default {
   pubKey: process.env.PUBLIC_KEY as string,
   privateKey: process.env.PRIVATE_KEY as string,
   tokenTTL: process.env.TOKEN_TTL as string,
+  refreshTTL: process.env.REFRESH_TTL as string,
 };
