@@ -1,9 +1,18 @@
+import { getUserId } from './../utils/currentUser.utils';
 import successResponse from '../responseHandlers/successResponse';
 import userService from '../services/user.service';
 import { Request, Response, NextFunction } from 'express';
 import { logger } from '../middleware/logger';
 
 const userController = {
+  /**
+   * triggers the user service create user function
+   *
+   * @param req express Request object
+   * @param res express Response object
+   * @param next express Next function
+   * @returns a success response if no errors
+   */
   createUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const createdUser = await userService.createUser(req.body);
@@ -13,6 +22,14 @@ const userController = {
       next(error);
     }
   },
+  /**
+   * triggers the user service sign user function
+   *
+   * @param req express Request object
+   * @param res express Response object
+   * @param next express Next function
+   * @returns a success response if no errors
+   */
   signUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { accessToken, refreshToken } = await userService.signUser(req.body);
@@ -24,6 +41,14 @@ const userController = {
       next(error);
     }
   },
+  /**
+   * log the user out of the system
+   *
+   * @param req express Request object
+   * @param res express Response object
+   * @param next express Next function
+   * @returns a success response if no errors
+   */
   logout: async (req: Request, res: Response, next: NextFunction) => {
     try {
       req.currentUser = null;
@@ -33,11 +58,38 @@ const userController = {
       next(error);
     }
   },
+  /**
+   * triggers the user service get user function
+   *
+   * @param req express Request object
+   * @param res express Response object
+   * @param next express Next function
+   * @returns a success response if no errors
+   */
   getUserByEmail: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await userService.getUserByEmail(req.query);
       logger.info('user was found', user);
       successResponse(res, 'user was found', user);
+    } catch (error: unknown) {
+      next(error);
+    }
+  },
+  /**
+   * triggers the user service add user cards function
+   *
+   * @param req express Request object
+   * @param res express Response object
+   * @param next express Next function
+   * @returns a success response if no errors
+   */
+  addUserCards: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = getUserId(req);
+      const { cards } = req.body;
+      const resp = await userService.addUserCards(userId, cards);
+      logger.info('cards has been added successfully', resp.toJSON());
+      successResponse(res, 'cards has been added successfully', resp);
     } catch (error: unknown) {
       next(error);
     }

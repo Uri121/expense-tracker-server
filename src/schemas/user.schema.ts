@@ -25,3 +25,7 @@ export const userQuery = Joi.object({
     .regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
     .required(),
 });
+
+export const addCardSchema = Joi.object({
+  cards: Joi.array().items(Joi.string().min(4).max(4).required()),
+});

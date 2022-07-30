@@ -10,6 +10,7 @@ export interface IUserDocument extends mongoose.Document {
   password: string;
   createdAt: Date;
   updatedAt: Date;
+  userCards: string[];
   comparePassword: (password: string) => boolean;
 }
 
@@ -29,6 +30,7 @@ const userSchema = new mongoose.Schema(
     lastName: { type: String, require: true },
     password: { type: String, require: true },
     email: { type: String, require: true, unique: true },
+    userCards: [{ type: String }],
   },
   {
     timestamps: true,
