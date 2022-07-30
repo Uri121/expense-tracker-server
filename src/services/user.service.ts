@@ -7,6 +7,12 @@ import config from '../config/default.config';
 const { tokenTTL, refreshTTL } = config;
 
 const userService = {
+  /**
+   * create a new user and save in the db
+   *
+   * @param input user model schema
+   * @returns the new user
+   */
   createUser: async (
     input: DocumentDefinition<Omit<IUserDocument, 'createdAt' | 'updatedAt' | 'comparePassword'>>
   ): Promise<Partial<IUserDocument>> => {
@@ -17,6 +23,12 @@ const userService = {
       throw error;
     }
   },
+  /**
+   * sign a user into the system and issue jwt token
+   *
+   * @param input email and password
+   * @returns accessToken and refreshToken
+   */
   signUser: async (input: ISignUser): Promise<IAuth> => {
     try {
       const user = await UserModel.findOne({ email: input.email });
@@ -31,6 +43,12 @@ const userService = {
       throw error;
     }
   },
+  /**
+   * issue a new accessToken if the refreshToken is valid
+   *
+   * @param refreshToken jwt token
+   * @returns a new accessToken
+   */
   reIssueAccessToken: async (refreshToken: string) => {
     const { decoded } = validateJwt(refreshToken);
     if (!decoded) return false;
@@ -40,9 +58,31 @@ const userService = {
     const accessToken = signJwt(omit(user.toJSON(), 'password'), { expiresIn: tokenTTL });
     return accessToken;
   },
+  /**
+   * get user by the unique field email
+   *
+   * @param input user email
+   * @returns a user model
+   */
   getUserByEmail: async (input: FilterQuery<IUserDocument>): Promise<IUserDocument> => {
     try {
       return (await UserModel.findOne({ input }).lean().select('-password')) as IUserDocument;
+    } catch (error) {
+      throw error;
+    }
+  },
+  /**
+   *  the function add the last 4 digits of the user cards
+   *
+   * todo need to check if the cards already exist
+   *
+   * @param userId to find the correct user
+   * @param input array or card numbers
+   * @returns the updated user model
+   */
+  addUserCards: async (userId: string, input: string[]): Promise<IUserDocument> => {
+    try {
+      return (await UserModel.findByIdAndUpdate(userId, { $set: { userCards: input } })) as IUserDocument;
     } catch (error) {
       throw error;
     }
