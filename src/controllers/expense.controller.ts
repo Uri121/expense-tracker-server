@@ -5,6 +5,13 @@ import expenseService from '../services/expense.service';
 import { getUserId } from '../utils/currentUser.utils';
 
 const expenseController = {
+  /**
+   * trigger the expense service create function
+   *
+   * @param req express Request object
+   * @param res express Response object
+   * @param next express Next function
+   */
   createExpense: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = getUserId(req);
@@ -15,6 +22,13 @@ const expenseController = {
       next(error);
     }
   },
+  /**
+   * trigger the expense service get function
+   *
+   * @param req express Request object
+   * @param res express Response object
+   * @param next express Next function
+   */
   getExpenses: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = getUserId(req);
@@ -25,6 +39,13 @@ const expenseController = {
       next(error);
     }
   },
+  /**
+   * trigger the expense service create from excel function
+   *
+   * @param req express Request object
+   * @param res express Response object
+   * @param next express Next function
+   */
   expenseFromExcel: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = getUserId(req);
