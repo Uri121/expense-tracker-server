@@ -41,6 +41,6 @@ export const loggerMiddleWare = (req: Request, res: Response, next: NextFunction
  * @param next express next function
  */
 export const errorMiddleWare = (error: Error, req: Request, res: Response, next: NextFunction) => {
-  logger.error(error.message);
+  logger.error('💣 ', error);
   errorResponse(res, error);
 };
