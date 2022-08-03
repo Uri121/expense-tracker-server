@@ -2,6 +2,9 @@ import express from 'express';
 import { logger, loggerMiddleWare, errorMiddleWare } from './src/middleware/logger';
 import { connectDb } from './src/db/connect';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+
+import helmet from 'helmet';
 import 'dotenv/config';
 import userRouter from './src/routes/user.route';
 import config from './src/config/default.config';
@@ -12,6 +15,13 @@ const { port } = config;
 const app = express();
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: '*',
+    credentials: true,
+  })
+);
+app.use(helmet());
 app.use(cookieParser());
 app.use(loggerMiddleWare);
 app.use('/api/user', userRouter);
