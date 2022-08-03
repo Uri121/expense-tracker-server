@@ -24,6 +24,11 @@ export interface IAuth {
   refreshToken: string;
 }
 
+export interface IBalanceRange {
+  start: string;
+  end: string;
+}
+
 const userSchema = new mongoose.Schema(
   {
     firstName: { type: String, require: true },

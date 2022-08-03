@@ -1,7 +1,10 @@
+import { ExpenseModel } from './../models/expense.model';
+import { IBalanceRange } from './../models/user.model';
 import { ISignUser, IUserDocument, UserModel, IAuth } from '../models/user.model';
 import { DocumentDefinition, FilterQuery } from 'mongoose';
 import { omit } from 'lodash';
 import { signJwt, validateJwt } from '../utils/jwt.utils';
+import mongoose from 'mongoose';
 import config from '../config/default.config';
 
 const { tokenTTL, refreshTTL } = config;
@@ -83,6 +86,65 @@ const userService = {
   addUserCards: async (userId: string, input: string[]): Promise<IUserDocument> => {
     try {
       return (await UserModel.findByIdAndUpdate(userId, { $set: { userCards: input } })) as IUserDocument;
+    } catch (error) {
+      throw error;
+    }
+  },
+  /**
+   * calc the balance for a range of dates
+   *
+   * @param userId string represents the user id
+   * @param query the date range to calc the balance
+   * @returns the total expense income and balance
+   */
+  getBalanceByRange: async (userId: string, { start, end }: IBalanceRange) => {
+    try {
+      const query = [
+        {
+          $match: {
+            userId: new mongoose.Types.ObjectId(userId),
+            date: {
+              $gte: new Date(start),
+              $lte: new Date(end),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$userId',
+            expenseAmount: {
+              $sum: '$amount',
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: 'incomes',
+            localField: '_id',
+            foreignField: 'userId',
+            as: 'incomes',
+          },
+        },
+        {
+          $project: {
+            expense: '$expenseAmount',
+            income: {
+              $sum: '$incomes.salary',
+            },
+            total: {
+              $subtract: [
+                {
+                  $sum: '$incomes.salary',
+                },
+                '$expenseAmount',
+              ],
+            },
+          },
+        },
+      ];
+      const rsp = await ExpenseModel.aggregate(query);
+
+      return rsp[0];
     } catch (error) {
       throw error;
     }

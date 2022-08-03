@@ -29,3 +29,8 @@ export const userQuery = Joi.object({
 export const addCardSchema = Joi.object({
   cards: Joi.array().items(Joi.string().min(4).max(4).required()),
 });
+
+export const balanceQuery = Joi.object({
+  start: Joi.date().required(),
+  end: Joi.date().required(),
+});

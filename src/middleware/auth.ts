@@ -27,7 +27,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     if (expired && refreshToken) {
       const newToken = await userService.reIssueAccessToken(refreshToken);
 
-      if (!newToken) throw new Error('something went wrong');
+      if (!newToken) throw new Error('need to login again');
 
       res.cookie('accessToken', accessToken, { maxAge: 9000, httpOnly: true, secure: true });
       const { decoded } = validateJwt(newToken);

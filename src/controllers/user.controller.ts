@@ -94,6 +94,27 @@ const userController = {
       next(error);
     }
   },
+  /**
+   * triggers the user service get balance function
+   *
+   * @param req express Request object
+   * @param res express Response object
+   * @param next express Next function
+   * @returns a success response if no errors
+   */
+  getBalanceByRange: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = getUserId(req);
+      const start = req.query.start as string;
+      const end = req.query.end as string;
+
+      const balance = await userService.getBalanceByRange(userId, { start, end });
+      logger.info('your balance is', balance);
+      successResponse(res, 'your balance is', balance);
+    } catch (error: unknown) {
+      next(error);
+    }
+  },
 };
 
 export default userController;

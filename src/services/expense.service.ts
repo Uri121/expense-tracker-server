@@ -16,8 +16,10 @@ import { UserModel } from '../models/user.model';
 const setDataToBeSavedInDb = (expenses: any[], userId: string, userCards: string[]): IExpenseDocument[] => {
   const filtered = expenses.filter((item) => userCards.find((card) => card === item.cardNumber));
   const expensesToSave = filtered.map((item) => {
+    const { date, ...rest } = item;
     return {
-      ...item,
+      ...rest,
+      date: new Date(date),
       userId,
     };
   });
